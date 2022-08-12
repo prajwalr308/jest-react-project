@@ -77,14 +77,16 @@ test("user should be rendered after fetching", async () => {
       }, 100);
     });
   }
-  function clearCityDatabase() {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        cities = [];
-        resolve();
-      }, 100);
-    });
+  function isValidCityFoodPair(name, food) {
+    const city = cities.find(city => city.name === name);
+  
+    if (!city || !city.foods) {
+      return false;
+    }
+  
+    return city.foods.includes(food);
   }
+  
 
   
   function initializeCityDatabase() {
@@ -96,20 +98,21 @@ test("user should be rendered after fetching", async () => {
       }, 100);
     });
   }
-  function isValidCityFoodPair(name, food) {
-    const city = cities.find(city => city.name === name);
-  
-    if (!city || !city.foods) {
-      return false;
-    }
-  
-    return city.foods.includes(food);
+  function clearCityDatabase() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        cities = [];
+        resolve();
+      }, 100);
+    });
   }
-  
-  
+    
   function isCity(name) {
     return cities.map(city => city.name).includes(name);
   }
+
+ 
+
   beforeAll(() => {
     return initializeCityDatabase();
   });
@@ -129,7 +132,7 @@ test("user should be rendered after fetching", async () => {
   test("has only 2 cities", () => {
     expect(cities.length).toBe(2);
   });
-  
+
   describe("matching cities to foods", () => {
     // Applies only to tests in this describe block
     beforeEach(() => {
